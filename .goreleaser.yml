@@ -1,0 +1,77 @@
+version: 2
+
+project_name: hostpeek
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: hostpeek
+    main: ./cmd/hostpeek
+    binary: hostpeek
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - id: default
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - LICENSE
+      - README.md
+      - hostpeek.example.yaml
+
+nfpms:
+  - id: packages
+    package_name: hostpeek
+    vendor: Appouse
+    homepage: https://github.com/Appouse/HostPeek
+    maintainer: Appouse <info@appouse.com>
+    description: "Tiny, cross-platform, self-hosted node agent that exposes host metrics over HTTP as JSON."
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    bindir: /usr/local/bin
+    contents:
+      - src: hostpeek.example.yaml
+        dst: /etc/hostpeek/hostpeek.yaml
+        type: config
+      - src: packaging/hostpeek.service
+        dst: /etc/systemd/system/hostpeek.service
+        type: config
+    scripts:
+      postinstall: packaging/postinstall.sh
+      preremove: packaging/preremove.sh
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+      - "^chore:"
+
+release:
+  github:
+    owner: Appouse
+    name: HostPeek
+  prerelease: auto

@@ -1,0 +1,20 @@
+[Unit]
+Description=HostPeek - Host Metrics Agent
+Documentation=https://github.com/Appouse/HostPeek
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/hostpeek -config /etc/hostpeek/hostpeek.yaml
+Restart=on-failure
+RestartSec=5
+User=hostpeek
+Group=hostpeek
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,19 @@
+# HostPeek Configuration
+# All settings are optional. Defaults are shown below.
+
+server:
+  listen: ":8080"          # Address to bind (e.g. "0.0.0.0:9090", ":8080")
+  read_timeout: 5s         # HTTP read timeout
+  write_timeout: 10s       # HTTP write timeout
+
+auth:
+  enabled: false           # Enable API key authentication
+  api_key: ""              # Required header: X-API-Key
+
+collectors:
+  cpu: true                # Collect CPU metrics
+  memory: true             # Collect memory metrics
+  disk: true               # Collect disk metrics
+  network: true            # Collect network metrics
+  os: true                 # Collect OS information
+  uptime: true             # Collect uptime information
