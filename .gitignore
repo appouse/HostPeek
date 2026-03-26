@@ -1,6 +1,6 @@
 # Binaries
-hostpeek
-hostpeek.exe
+/hostpeek
+/hostpeek.exe
 dist/
 
 # Go
